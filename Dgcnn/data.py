@@ -55,7 +55,7 @@ class CustomDataset(Dataset):
 
 if __name__ == '__main__':
     # Modify this path to your dataset directory
-    dataset_path = '/content/anotation1/data_real'
+    dataset_path = '/content/pytorch/data/anotation1/data_real'
     num_points = 400
 
     custom_dataset = CustomDataset(dataset_path, num_points=num_points)
