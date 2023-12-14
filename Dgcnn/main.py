@@ -109,42 +109,42 @@ def train(args, io):
         # ####################
         # # Test
         # ####################
-        # test_loss = 0.0
-        # count = 0.0
-        # model.eval()
-        # test_pred = []
-        # test_true = []
-        # for data, label in test_loader:
-        #     data = data.to(device, dtype=torch.float32)  # Change the data type to float32
-        #     label = label.to(device, dtype=torch.long)
-        #     data = data.permute(0, 2, 1)
-        #     batch_size = data.size()[0]
-        #     logits = model(data)
-        #     loss = criterion(logits, label)
-        #     preds = logits.max(dim=1)[1]
-        #     count += batch_size
-        #     test_loss += loss.item() * batch_size
-        #     test_true.append(label.cpu().numpy())
-        #     test_pred.append(preds.detach().cpu().numpy())
-        # test_true = np.concatenate(test_true)
-        # test_pred = np.concatenate(test_pred)
-        # test_acc = metrics.accuracy_score(test_true, test_pred)
-        # avg_per_class_acc = metrics.balanced_accuracy_score(test_true, test_pred)
-        # outstr = 'Test %d, loss: %.6f, test acc: %.6f, test avg acc: %.6f' % (epoch,
-        #                                                                       test_loss*1.0/count,
-        #                                                                       test_acc,
-        #                                                                       avg_per_class_acc)
-        # io.cprint(outstr)
+        test_loss = 0.0
+        count = 0.0
+        model.eval()
+        test_pred = []
+        test_true = []
+        for data, label in test_loader:
+            data = data.to(device, dtype=torch.float32)  # Change the data type to float32
+            label = label.to(device, dtype=torch.long)
+            data = data.permute(0, 2, 1)
+            batch_size = data.size()[0]
+            logits = model(data)
+            loss = criterion(logits, label)
+            preds = logits.max(dim=1)[1]
+            count += batch_size
+            test_loss += loss.item() * batch_size
+            test_true.append(label.cpu().numpy())
+            test_pred.append(preds.detach().cpu().numpy())
+        test_true = np.concatenate(test_true)
+        test_pred = np.concatenate(test_pred)
+        test_acc = metrics.accuracy_score(test_true, test_pred)
+        avg_per_class_acc = metrics.balanced_accuracy_score(test_true, test_pred)
+        outstr = 'Test %d, loss: %.6f, test acc: %.6f, test avg acc: %.6f' % (epoch,
+                                                                              test_loss*1.0/count,
+                                                                              test_acc,
+                                                                              avg_per_class_acc)
+        io.cprint(outstr)
 
         # Append training accuracy to the list
         train_accuracies.append(metrics.accuracy_score(train_true, train_pred))
 
-        # Append test accuracy to the list
-        # test_accuracies.append(test_acc)
+        Append test accuracy to the list
+        test_accuracies.append(test_acc)
 
-        # if test_acc >= best_test_acc:
-        #     best_test_acc = test_acc
-        #     torch.save(model.state_dict(), 'checkpoints/%s/models/model.t7' % args.exp_name)
+        if test_acc >= best_test_acc:
+            best_test_acc = test_acc
+            torch.save(model.state_dict(), 'checkpoints/%s/models/model.t7' % args.exp_name)
 
 
 
